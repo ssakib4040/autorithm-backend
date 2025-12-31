@@ -89,23 +89,16 @@ yarn start
 - **POST** `/api/auth/forgot-password` - Request password reset
 - **POST** `/api/auth/reset-password` - Reset password with token
 
-### Workflow APIs
+### Products
 
-- **GET** `/api/workflows` - Get all workflows (with pagination and filters)
-- **GET** `/api/workflows/:id` - Get workflow details by ID
-- **POST** `/api/workflows` - Create a new workflow
-- **PUT** `/api/workflows/:id` - Update workflow
-- **DELETE** `/api/workflows/:id` - Delete workflow
-- **GET** `/api/workflows/categories` - Get workflow categories
-- **GET** `/api/workflows/search` - Search workflows
-
-### User Management APIs
-
-- **GET** `/api/users` - Get all users (Admin only)
-- **GET** `/api/users/:id` - Get user details
-- **PUT** `/api/users/:id` - Update user profile
-- **DELETE** `/api/users/:id` - Delete user (Admin only)
-- **GET** `/api/users/:id/purchases` - Get user's purchased workflows
+- **GET** `/api/products` - Get all products (with pagination and filters)
+- **GET** `/api/products/:id` - Get product details by ID
+- **POST** `/api/products` - Create a new product (Admin only)
+- **PUT** `/api/products/:id` - Update product (Admin only)
+- **DELETE** `/api/products/:id` - Delete product (Admin only)
+- **GET** `/api/products/featured` - Get featured products
+- **GET** `/api/products/categories` - Get product categories
+- **GET** `/api/products/search` - Search products
 
 ### Purchase/Order APIs
 
@@ -121,12 +114,6 @@ yarn start
 - **PUT** `/api/admin/workflows/:id/approve` - Approve workflow
 - **PUT** `/api/admin/workflows/:id/reject` - Reject workflow
 - **GET** `/api/admin/revenue` - Get revenue statistics
-
-### Integration APIs
-
-- **GET** `/api/integrations/n8n` - Get n8n integration details
-- **GET** `/api/integrations/make` - Get Make.com integration details
-- **POST** `/api/integrations/sync` - Sync workflow with platform
 
 ---
 
