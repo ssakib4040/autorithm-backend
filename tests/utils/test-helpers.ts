@@ -61,7 +61,7 @@ export const createMockRequest = (
   url: string,
   options?: {
     method?: string;
-    body?: any;
+    body?: unknown;
     headers?: Record<string, string>;
   }
 ) => {
@@ -102,10 +102,40 @@ export const isValidUUID = (id: string): boolean => {
 };
 
 // Mock Database (for testing purposes)
+interface User {
+  id: string;
+  email: string;
+  name: string;
+  role: string;
+  createdAt: string;
+}
+
+interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  platform: string;
+  featured: boolean;
+  rating: number;
+  downloads: number;
+  createdAt: string;
+}
+
+interface Order {
+  id: string;
+  userId: string;
+  productId: string;
+  total: number;
+  status: string;
+  createdAt: string;
+}
+
 export class MockDatabase {
-  private users: any[] = [mockUser, mockAdminUser];
-  private products: any[] = [mockProduct];
-  private orders: any[] = [mockOrder];
+  private users: User[] = [mockUser, mockAdminUser];
+  private products: Product[] = [mockProduct];
+  private orders: Order[] = [mockOrder];
 
   // User methods
   findUserByEmail(email: string) {
@@ -116,7 +146,7 @@ export class MockDatabase {
     return this.users.find((u) => u.id === id);
   }
 
-  createUser(user: any) {
+  createUser(user: User) {
     this.users.push(user);
     return user;
   }
@@ -130,7 +160,7 @@ export class MockDatabase {
     return this.products;
   }
 
-  createProduct(product: any) {
+  createProduct(product: Product) {
     this.products.push(product);
     return product;
   }
@@ -144,7 +174,7 @@ export class MockDatabase {
     return this.orders.filter((o) => o.userId === userId);
   }
 
-  createOrder(order: any) {
+  createOrder(order: Order) {
     this.orders.push(order);
     return order;
   }
