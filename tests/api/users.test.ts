@@ -3,7 +3,7 @@ import { NextRequest } from "next/server";
 
 describe("API Tests", () => {
   describe("Root API Route", () => {
-    it("should return 500 error", async () => {
+    it("should return 200 and a running message", async () => {
       const request = new NextRequest("http://localhost:3000/api/hello");
       const response = await GET(request);
       const data = await response.json();
