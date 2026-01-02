@@ -18,7 +18,7 @@ export async function POST(request: Request) {
     // Find user in database
     const user = await db
       .collection("users")
-      .findOne({ email: email.toLowerCase() });
+      .findOne({ email: email.toLowerCase() }, { projection: { _id: 0 } });
 
     if (!user) {
       return NextResponse.json(
