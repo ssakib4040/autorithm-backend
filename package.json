@@ -15,12 +15,16 @@
     "validate": "yarn lint && yarn test:ci && yarn build"
   },
   "dependencies": {
+    "@vercel/functions": "^3.3.4",
+    "bcryptjs": "^3.0.3",
+    "mongodb": "^7.0.0",
     "next": "16.1.1",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/bcryptjs": "^3.0.0",
     "@types/jest": "^30.0.0",
     "@types/node": "^20",
     "@types/react": "^19",
