@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import db from "@/lib/mongodb";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 export async function POST(request: Request) {
   try {
@@ -37,12 +38,21 @@ export async function POST(request: Request) {
       );
     }
 
+    // Generate JWT token
+    const token = jwt.sign(
+      { email: user.email, name: user.name },
+      process.env.JWT_SECRET || "fallback-secret",
+      { expiresIn: "7d" }
+    );
+
     // Return user data (excluding password)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: _, ...userWithoutPassword } = user;
 
     return NextResponse.json(
       {
         message: "Login successful",
+        token,
         user: userWithoutPassword,
       },
       { status: 200 }
