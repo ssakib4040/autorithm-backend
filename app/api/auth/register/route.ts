@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     // Check if user already exists
     const existingUser = await db
       .collection("users")
-      .findOne({ email: email.toLowerCase() });
+      .findOne({ email: email.toLowerCase() }, { projection: { _id: 0 } });
 
     if (existingUser) {
       return NextResponse.json(
@@ -46,16 +46,20 @@ export async function POST(request: Request) {
       updatedAt: new Date(),
     };
 
-    const result = await db.collection("users").insertOne(newUser);
+    const createdUser = await db.collection("users").insertOne(newUser);
 
-    // Return user data (excluding password)
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password: _, ...userWithoutPassword } = newUser;
+    // Return user data (excluding password and _id)
+    const userResponse = {
+      email: newUser.email,
+      name: newUser.name,
+      createdAt: newUser.createdAt,
+      updatedAt: newUser.updatedAt,
+    };
 
     return NextResponse.json(
       {
         message: "User registered successfully",
-        user: { ...userWithoutPassword, _id: result.insertedId },
+        user: userResponse,
       },
       { status: 201 }
     );
