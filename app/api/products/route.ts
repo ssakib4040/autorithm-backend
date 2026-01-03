@@ -1,18 +1,49 @@
 import { NextResponse } from "next/server";
 import db from "@/lib/mongodb";
 
-// GET /api/products - List all products
+// GET /api/products - List all products with filters
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const category = searchParams.get("category");
+    const tool = searchParams.get("tool");
+    const minPrice = searchParams.get("minPrice");
+    const maxPrice = searchParams.get("maxPrice");
+    const search = searchParams.get("search");
     const limit = parseInt(searchParams.get("limit") || "50");
-    const skip = parseInt(searchParams.get("skip") || "0");
+    const page = parseInt(searchParams.get("page") || "1");
+    const skip = (page - 1) * limit;
 
     // Build query
-    const query: Record<string, string> = {};
+    const query: Record<
+      string,
+      | string
+      | { $gte?: number; $lte?: number }
+      | Array<{
+          name?: { $regex: string; $options: string };
+          description?: { $regex: string; $options: string };
+        }>
+    > = {};
+
     if (category) {
       query.category = category;
+    }
+
+    if (tool) {
+      query.tool = tool;
+    }
+
+    if (minPrice || maxPrice) {
+      query.price = {};
+      if (minPrice) query.price.$gte = parseInt(minPrice);
+      if (maxPrice) query.price.$lte = parseInt(maxPrice);
+    }
+
+    if (search) {
+      query.$or = [
+        { name: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
+      ];
     }
 
     // Fetch products
@@ -28,8 +59,9 @@ export async function GET(request: Request) {
     return NextResponse.json(
       {
         products,
-        total,
+        page,
         limit,
+        totalPages: Math.ceil(total / limit),
         skip,
       },
       { status: 200 }
